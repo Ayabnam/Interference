@@ -1,0 +1,31 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+source = 0.5
+sources = [-source, source]
+axlim = max(sources)*2 + 1
+N = 1000
+
+x = np.linspace(-axlim, axlim, N)
+y = np.linspace(-axlim, axlim, N)
+X, Y = np.meshgrid(x, y)
+
+fig = plt.figure()
+
+def update(f):
+    plt.gca().cla()
+    C1 = np.sin(2*np.pi*f*np.sqrt((X - sources[0])**2 + Y**2))
+    C2 = np.sin(2*np.pi*f*np.sqrt((X - sources[1])**2 + Y**2))
+    Z = C1 + C2
+
+    plt.contour(X, Y, Z)
+
+    plt.plot(sources, [0, 0], 'ro')
+    plt.gca().set_aspect('equal')
+    plt.title(f'Wave interference f = {f} Hz')
+    plt.axis('off')
+
+ani = FuncAnimation(fig = fig, func = update, frames = 11, interval = 100)
+
+plt.show()
